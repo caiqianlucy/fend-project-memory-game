@@ -177,7 +177,7 @@ function win(){
 //add eventlistener to card
 for (let i=0; i<cards.length; i++){
   cards[i].addEventListener("click", display);
-  cards[i].addEventListener("click", openCard;
+  cards[i].addEventListener("click", openCard);
   cards[i].addEventListener("click", win);
 }
 /*
