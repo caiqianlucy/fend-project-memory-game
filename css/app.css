@@ -69,6 +69,10 @@ h1 {
     transform: rotateY(0);
     background: #02b3e4;
     cursor: default;
+    animation-name:flipInY;
+    -webkit-backface-visibility: visible !important;
+    backface-visibility: visible !important;
+    animation-duration:0.5s;
 }
 
 .deck .card.show {
@@ -79,8 +83,23 @@ h1 {
     cursor: default;
     background: #02ccba;
     font-size: 33px;
+    animation-name:heartbeat;
+    -webkit-backface-visibility: visible !important;
+    backface-visibility: visible !important;
+    animation-duration:0.5s;
 }
-
+.deck .card.unmatched {
+  background:#ff00ff;
+  animation-name: ruberband;
+  font-size:33px;
+  -webkit-backface-visibility: visible !important;
+	backface-visibility: visible !important;
+	animation-duration: .5s;
+}
+.deck .card.disabled {
+  pointer-events:none;
+  opacity:1;
+}
 /*
  * Styles for the Score Panel
  */
@@ -106,4 +125,90 @@ h1 {
 .score-panel .restart {
     float: right;
     cursor: pointer;
+}
+
+.fa-star {
+  color: #ffff00;
+}
+
+.timer {
+  display: inline-block;
+  margin-bottom:10px;
+}
+
+@keyframes flipInY {
+  0% {
+       transform: perspective(400px) rotateY(90deg);
+       opacity: 0;
+  }
+  40% {
+       transform: perspective(400px) rotateY(-10deg);
+  }
+  70% {
+       transform: perspective(400px) rotateY(10deg);
+  }
+  100% {
+       transform: perspective(400px) rotateY(0deg);
+       opacity: 1;
+  }
+}
+@keyframes heartbeat {
+  from {
+    transform: scale3d(1, 1, 1);
+  }
+  50% {
+    transform: scale3d(1.3, 1.3, 1.3);
+  }
+  to {
+    transform:scale3d(1, 1, 1);
+  }
+}
+@keyframes ruberband {
+  from {
+    transform: scale3d(1, 1, 1);
+  }
+  30% {
+    transform: scale3d(1.25, 0.75, 1);
+  }
+  40% {
+    transform: scale3d(0.75, 1.25, 1);
+  }
+  50% {
+    transform: scale3d(1.15, 0.85, 1);
+  }
+  65% {
+    transform: scale3d(.95, 1.05, 1);
+  }
+  75% {
+    transform: scale3d(1.05, .95, 1);
+  }
+  to {
+    transform: scale3d(1, 1, 1);
+  }
+}
+.winMemo{
+  position:fixed;
+  top: 0;
+  bottom:0;
+  left:0;
+  right:0;
+  background: rgba(0, 0, 0, 0.8);
+  transition:opacity 500ms;
+  visibility:hidden;
+  opacity:0;
+}
+.winMemo.show {
+  visibility:visible;
+  opacity:1;
+}
+
+#playAgain {
+  background-color:#1a65dd;
+  padding:20px;
+  font-size:33px;
+  display:block;
+  width:50%;
+  font-family:'Open Sans', sans-serif;
+  color:#ffffff;
+  border-radius:5px;
 }
