@@ -1,11 +1,18 @@
 /*
  * Create a list that holds all of your cards
  */
-let cards=document.getElementsByClassName("card");
 
+let cardList=["fa-diamond", "fa-diamond", "fa-paper-plane-o", "fa-paper-plane-o",
+              "fa-anchor", "fa-anchor", "fa-bolt", "fa-bolt", "fa-cube", "fa-cube",
+              "fa-leaf", "fa-leaf", "fa-bicycle", "fa-bicycle", "fa-bomb",
+              "fa-bomb"];
+function generateCard(card) {
+  return `<li class="card" data-card="${card}"><i class="fa ${card}"></i></li>`;
+}
 
-
+//declare deck variable
 let deck=document.querySelector(".deck");
+
 //declare move number variable
 let moveNumber=0;
 let counter=document.querySelector(".moves");
@@ -19,11 +26,6 @@ let matchedCards=document.getElementsByClassName("match");
 
 //declare opened cards
 let openedCards=[];
-
-//declare restart, playAgain
-let restartGame=document.getElementsByClassName("restart");
-let playAgain=document.getElementById("playAgain");
-
 
 /*
  * Display the cards on the page
@@ -46,16 +48,17 @@ function shuffle(array) {
 
     return array;
 }
-
+let interval;
 document.body.onload=startGame();
 
 function startGame(){
-  cards=shuffle(cards);
-  //deck.innerHTML="";
-  for (let i=0; i<cards.length; i++){
-    cards[i].classList.remove("show", "open", "match", "disabled");
-    deck.append(cards[i]);
-  }
+  cardList=shuffle(cardList);
+  let cardHTML=cardList.map(function(card){
+    return generateCard(card);
+  });
+  // console.log(cardHTML);
+  deck.innerHTML=cardHTML.join('');
+
   //reset moveNumber
   moveNumber=0;
   counter.innerHTML=moveNumber;
@@ -73,13 +76,13 @@ function startGame(){
   clearInterval(interval);
 }
 
-restartGame.addEventListener("click", startGame);
-playAgain.addEventListener("click", startGame);
+
 
 //display the card's symbol
 function display(){
-  this.classList.add("open");
-  this.classList.add("show");
+  this.classList.toggle("open");
+  this.classList.toggle("show");
+  this.classList.toggle("disabled");
 }
 
 //check match or unmatch when open a card
@@ -88,7 +91,7 @@ function openCard(){
   let len=openedCards.length;
   if(len===2){
     moveCounter();
-    if(openedCards[0].children().attr("class")===openedCards[1].children().attr("class")){
+    if(openedCards[0].dataset.card===openedCards[1].dataset.card){
       matched();
     }
     else {
@@ -111,15 +114,15 @@ function unmatched(){
   openedCards[0].classList.add("unmatched");
   openedCards[1].classList.add("unmatched");
   Array.prototype.filter.call(cards, function(card){
-    card.clssList.add("disabled")
+    card.classList.add("disabled")
   });
   setTimeout(function(){
-    openedCards[0].classList.remove("show", "open");
-    openedCards[1].classList.remove("show", "open");
+    openedCards[0].classList.remove("show", "open", "unmatched");
+    openedCards[1].classList.remove("show", "open", "unmatched");
     Array.prototype.filter.call(cards, function(card){
       card.classList.remove("disabled");
       for (let i=0; i<matchedCards.length; i++){
-        matchedCard[i].classList.add("disabled");
+        matchedCards[i].classList.add("disabled");
       }
       openedCards=[];
     });
@@ -149,7 +152,7 @@ function moveCounter(){
 
 //timer function
 let timer=document.querySelector(".timer");
-let interval;
+
 function startTimer(){
   interval=setInterval(function(){
     timer.innerHTML=hour+"hrs"+minute+"mins"+second+"secs";
@@ -166,20 +169,28 @@ function startTimer(){
 }
 // win message
 function win(){
-  if (matchedCard.length==16){
+  if (matchedCards.length==16){
     clearInterval(interval);
-    winMemo.classList.add("show");
+    let popup=document.querySelector("#popup");
+    popup.classList.add("show");
     document.getElementById("totalMove").innerHTML=moveNumber;
-    document.getElementById("starRating").innerHTML=document.querySelector("stars").innerHTML;
+    document.getElementById("starRating").innerHTML=document.querySelector(".stars").innerHTML;
   }
+}
+function playAgain(){
+  popup.classList.remove("show");
+  startGame();
 }
 
 //add eventlistener to card
+let cards=document.getElementsByClassName("card");
 for (let i=0; i<cards.length; i++){
   cards[i].addEventListener("click", display);
   cards[i].addEventListener("click", openCard);
   cards[i].addEventListener("click", win);
-}
+};
+
+
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
