@@ -169,7 +169,7 @@ let timer=document.querySelector(".timer");
 
 function startTimer(){
   interval=setInterval(function(){
-    timer.innerHTML=hour+"hrs"+minute+"mins"+second+"secs";
+    timer.innerHTML=hour+" hrs "+minute+" mins "+second+" secs ";
     second++;
     if (second==60){
       minute++;
@@ -189,6 +189,7 @@ function win(){
     popup.classList.add("show");
     document.getElementById("totalMove").innerHTML=moveNumber;
     document.getElementById("starRating").innerHTML=document.querySelector(".stars").innerHTML;
+    document.getElementById("totalTime").innerHTML=timer.innerHTML;
   }
 }
 function playAgain(){
