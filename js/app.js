@@ -12,7 +12,7 @@ function generateCard(card) {
 
 //declare deck variable
 let deck=document.querySelector(".deck");
-
+let interval;
 //declare move number variable
 let moveNumber=0;
 let counter=document.querySelector(".moves");
@@ -48,17 +48,24 @@ function shuffle(array) {
 
     return array;
 }
-let interval;
+//generate cards
+cardList=shuffle(cardList);
+let cardHTML=cardList.map(function(card){
+  return generateCard(card);
+});
+deck.innerHTML=cardHTML.join('');
+
+//declare cards
+let cards=document.querySelectorAll(".card");
+//start game
 document.body.onload=startGame();
 
 function startGame(){
-  cardList=shuffle(cardList);
-  let cardHTML=cardList.map(function(card){
-    return generateCard(card);
+  cards=shuffle(cards);
+  cards.forEach(function(card){
+    card.classList.remove("match", "open", "disabled", "show");
+    deck.append(card);
   });
-  // console.log(cardHTML);
-  deck.innerHTML=cardHTML.join('');
-
   //reset moveNumber
   moveNumber=0;
   counter.innerHTML=moveNumber;
@@ -74,8 +81,15 @@ function startGame(){
   let timer=document.querySelector(".timer");
   timer.innerHTML="0 hrs 0 mins 0 secs";
   clearInterval(interval);
-}
 
+}
+//add eventlistener to card
+
+  cards.forEach(function(card){
+    card.addEventListener("click", display);
+    card.addEventListener("click", openCard);
+    card.addEventListener("click", win);
+  });
 
 
 //display the card's symbol
@@ -182,13 +196,7 @@ function playAgain(){
   startGame();
 }
 
-//add eventlistener to card
-let cards=document.getElementsByClassName("card");
-for (let i=0; i<cards.length; i++){
-  cards[i].addEventListener("click", display);
-  cards[i].addEventListener("click", openCard);
-  cards[i].addEventListener("click", win);
-};
+
 
 
 /*
