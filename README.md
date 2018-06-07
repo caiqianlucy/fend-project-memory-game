@@ -4,8 +4,8 @@
 
 * [Descriptions](#descriptions)
 * [Challenges](#challenges)
-* [How to play](#how to play)
-* [Game Functionality](#game Functionality)
+* [How to play](#how-to-play)
+* [Game Functionality](#game-functionality)
 
 
 ## Descriptions
